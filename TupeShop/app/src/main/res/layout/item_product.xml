@@ -57,38 +57,39 @@
             android:gravity="center_vertical"
             android:layout_marginTop="8dp">
 
-            <Button
+            <ImageButton
                 android:id="@+id/btnAddToCart"
                 android:layout_width="0dp"
-                android:layout_height="34dp"
+                android:layout_height="36dp"
                 android:layout_weight="1"
-                android:text="+ Giỏ"
-                android:textSize="11sp"
-                android:backgroundTint="#E53935"
-                android:textColor="#FFFFFF"
-                android:padding="0dp"/>
+                android:src="@drawable/ic_cart"
+                android:background="@drawable/bg_btn_cart"
+                android:contentDescription="Thêm vào giỏ hàng"
+                android:scaleType="centerInside"
+                android:padding="6dp"
+                app:tint="#FFFFFF"/>
 
-            <Button
+            <ImageButton
                 android:id="@+id/btnEdit"
-                android:layout_width="38dp"
-                android:layout_height="34dp"
-                android:text="✏️"
-                android:textSize="11sp"
-                android:backgroundTint="#EEEEEE"
-                android:textColor="#424242"
-                android:padding="0dp"
-                android:layout_marginStart="4dp"/>
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:src="@drawable/ic_edit"
+                android:background="@drawable/bg_btn_edit"
+                android:contentDescription="Chỉnh sửa sản phẩm"
+                android:scaleType="centerInside"
+                android:padding="7dp"
+                android:layout_marginStart="6dp"/>
 
-            <Button
+            <ImageButton
                 android:id="@+id/btnDelete"
-                android:layout_width="38dp"
-                android:layout_height="34dp"
-                android:text="🗑️"
-                android:textSize="11sp"
-                android:backgroundTint="#EEEEEE"
-                android:textColor="#D32F2F"
-                android:padding="0dp"
-                android:layout_marginStart="4dp"/>
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:src="@drawable/ic_delete"
+                android:background="@drawable/bg_btn_delete"
+                android:contentDescription="Xóa sản phẩm"
+                android:scaleType="centerInside"
+                android:padding="7dp"
+                android:layout_marginStart="6dp"/>
 
         </LinearLayout>
 

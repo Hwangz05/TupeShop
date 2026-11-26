@@ -130,7 +130,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     static class ProductViewHolder extends RecyclerView.ViewHolder {
         ImageView ivImage;
         TextView tvName, tvPrice;
-        Button btnEdit, btnDelete, btnAddToCart;
+        View btnEdit, btnDelete, btnAddToCart;
 
         ProductViewHolder(View itemView) {
             super(itemView);

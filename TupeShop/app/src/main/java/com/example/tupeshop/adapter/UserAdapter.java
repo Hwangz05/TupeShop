@@ -47,6 +47,13 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         holder.tvUsername.setText("@" + u.getUsername() + (u.isAdmin() ? " (Admin)" : ""));
         holder.tvEmail.setText(u.getEmail().isEmpty() ? u.getPhone() : u.getEmail());
 
+        // Ẩn nút XÓA với tài khoản Admin
+        if (u.isAdmin()) {
+            holder.btnDelete.setVisibility(View.GONE);
+        } else {
+            holder.btnDelete.setVisibility(View.VISIBLE);
+        }
+
         // Sửa
         holder.btnEdit.setOnClickListener(v -> {
             Intent intent = new Intent(context, UserFormActivity.class);
@@ -54,12 +61,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
             context.startActivity(intent);
         });
 
-        // Xóa
+        // Xóa (chỉ với tài khoản không phải admin)
         holder.btnDelete.setOnClickListener(v -> {
-            if (u.isAdmin()) {
-                Toast.makeText(context, "Không thể xóa tài khoản Admin", Toast.LENGTH_SHORT).show();
-                return;
-            }
             new AlertDialog.Builder(context)
                     .setTitle("Xóa người dùng")
                     .setMessage("Bạn có chắc muốn xóa \"" + u.getFullName() + "\"?")

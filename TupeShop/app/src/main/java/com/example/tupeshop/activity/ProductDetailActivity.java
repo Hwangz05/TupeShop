@@ -2,6 +2,7 @@ package com.example.tupeshop.activity;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -9,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.example.tupeshop.R;
 import com.example.tupeshop.database.AppDatabase;
 import com.example.tupeshop.model.CartItem;
@@ -37,8 +39,16 @@ public class ProductDetailActivity extends AppCompatActivity {
         product = db.productDao().getProductById(productId);
         if (product == null) { finish(); return; }
 
+        setupHeader();
         displayProduct();
         setupAddToCart();
+    }
+
+    private void setupHeader() {
+        View btnBackHeader = findViewById(R.id.btnBackHeader);
+        if (btnBackHeader != null) {
+            btnBackHeader.setOnClickListener(v -> finish());
+        }
     }
 
     private void displayProduct() {
@@ -55,18 +65,16 @@ public class ProductDetailActivity extends AppCompatActivity {
         NumberFormat fmt = NumberFormat.getInstance(new Locale("vi", "VN"));
         tvPrice.setText(fmt.format((long) product.getPrice()) + " đ");
 
-        // Load ảnh nếu có URL
-        if (!product.getImageUrl().isEmpty()) {
-            try {
-                // Nếu có Glide/Picasso thì dùng ở đây
-                // Glide.with(this).load(product.getImageUrl()).into(ivImage);
-                ivImage.setImageResource(android.R.drawable.ic_menu_gallery);
-            } catch (Exception e) {
-                ivImage.setImageResource(android.R.drawable.ic_menu_gallery);
-            }
+        // Load ảnh sản phẩm với Glide
+        if (product.getImageUrl() != null && !product.getImageUrl().isEmpty()) {
+            Glide.with(this)
+                    .load(product.getImageUrl())
+                    .placeholder(android.R.drawable.ic_menu_gallery)
+                    .error(android.R.drawable.ic_menu_gallery)
+                    .into(ivImage);
+        } else {
+            ivImage.setImageResource(android.R.drawable.ic_menu_gallery);
         }
-
-        setTitle(product.getName());
     }
 
     private void setupAddToCart() {

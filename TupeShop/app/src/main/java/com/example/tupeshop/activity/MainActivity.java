@@ -97,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
      * Khởi tạo sẵn 2 sản phẩm mẫu như trong thiết kế ban đầu
      */
     private void initSampleProducts() {
+        // 1. iPhone 15 Pro Max
         if (db.productDao().searchProducts("iPhone 15 Pro Max").isEmpty()) {
             Product p1 = new Product(
                     "iPhone 15 Pro Max 256GB",
@@ -107,15 +108,48 @@ public class MainActivity extends AppCompatActivity {
             );
             db.productDao().insert(p1);
         }
-        if (db.productDao().searchProducts("Samsung Galaxy S24").isEmpty()) {
+
+        // 2. Samsung Galaxy S24 Ultra (Cập nhật link ảnh mới 100% hoạt động)
+        String s24Img = "https://cdn.tgdd.vn/Products/Images/42/307174/samsung-galaxy-s24-ultra-grey-thumbnew-600x600.jpg";
+        List<Product> samsungs = db.productDao().searchProducts("Samsung Galaxy S24");
+        if (samsungs.isEmpty()) {
             Product p2 = new Product(
                     "Samsung Galaxy S24 Ultra",
                     26990000,
-                    "https://cdn.tgdd.vn/Products/Images/42/319665/samsung-galaxy-s24-ultra-grey-thumb-600x600.jpg",
+                    s24Img,
                     "Màn hình Dynamic AMOLED 2X 6.8 inch, Chip Snapdragon 8 Gen 3 for Galaxy, bút S-Pen tích hợp, tính năng Galaxy AI thông minh.",
                     "Điện thoại"
             );
             db.productDao().insert(p2);
+        } else {
+            // Tự động sửa lại link ảnh cho sản phẩm Samsung đã có sẵn trong database cũ
+            Product p2 = samsungs.get(0);
+            p2.setImageUrl(s24Img);
+            db.productDao().update(p2);
+        }
+
+        // 3. iPhone 14 Pro Max (Sản phẩm mẫu thứ 3)
+        if (db.productDao().searchProducts("iPhone 14 Pro Max").isEmpty()) {
+            Product p3 = new Product(
+                    "iPhone 14 Pro Max 128GB",
+                    24990000,
+                    "https://cdn.tgdd.vn/Products/Images/42/251192/iphone-14-pro-max-tim-thumb-600x600.jpg",
+                    "Màn hình Dynamic Island sáng tạo, Chip A16 Bionic mạnh mẽ, camera 48MP siêu nét, thiết kế màu Tím Deep Purple quyến rũ.",
+                    "Điện thoại"
+            );
+            db.productDao().insert(p3);
+        }
+
+        // 4. iPhone 13 Pro Max (Sản phẩm mẫu thứ 4 giúp lưới 2 cột cân xứng)
+        if (db.productDao().searchProducts("iPhone 13 Pro Max").isEmpty()) {
+            Product p4 = new Product(
+                    "iPhone 13 Pro Max 128GB",
+                    18990000,
+                    "https://cdn.tgdd.vn/Products/Images/42/230529/iphone-13-pro-max-xanh-la-thumb-600x600.jpg",
+                    "Màn hình ProMotion 120Hz mượt mà, thời lượng pin trâu hàng đầu, Chip A15 Bionic bền bỉ và đẳng cấp.",
+                    "Điện thoại"
+            );
+            db.productDao().insert(p4);
         }
     }
 
@@ -161,6 +195,26 @@ public class MainActivity extends AppCompatActivity {
                         db.cartDao().clearCart(currentUserId);
                         loadCart();
                         Toast.makeText(this, "Đã dọn sạch giỏ hàng", Toast.LENGTH_SHORT).show();
+                    })
+                    .setNegativeButton("Hủy", null)
+                    .show();
+        });
+
+        // Nút Đặt hàng
+        Button btnCheckout = findViewById(R.id.btnCheckout);
+        btnCheckout.setOnClickListener(v -> {
+            List<CartItem> items = db.cartDao().getCartByUserId(currentUserId);
+            if (items.isEmpty()) {
+                Toast.makeText(this, "Giỏ hàng trống!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            new AlertDialog.Builder(this)
+                    .setTitle("Xác nhận đặt hàng")
+                    .setMessage("Bạn có chắc muốn đặt hàng?")
+                    .setPositiveButton("Đặt hàng", (d, w) -> {
+                        db.cartDao().clearCart(currentUserId);
+                        loadCart();
+                        Toast.makeText(this, "Đặt hàng thành công! 🎉", Toast.LENGTH_LONG).show();
                     })
                     .setNegativeButton("Hủy", null)
                     .show();
